@@ -23,50 +23,63 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        _paddingLeft = 20.0;
-        _numberOfWaves = 2.0;
-        _waveSpeed = 8.0;
-        _foreAmplitude = 18.0;
-        _backAmplitude = 5.0;
-        _foreLineColor = [UIColor greenColor];
-        _backLineColor = [[UIColor greenColor] colorWithAlphaComponent:0.5];
-        _foreLineWidth = 2.0;
-        _backLineWidth = 1.0;
-        
-        _waveLayerBack1 = [CAShapeLayer new];
-        _waveLayerBack1.bounds = CGRectMake(0, 0, frame.size.width, frame.size.height);
-        _waveLayerBack1.position = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
-        _waveLayerBack1.fillColor = [UIColor clearColor].CGColor;
-        _waveLayerBack1.lineWidth = _backLineWidth;
-        _waveLayerBack1.strokeColor = _backLineColor.CGColor;
-        [self.layer addSublayer:_waveLayerBack1];
-        
-        _waveLayerBack2 = [CAShapeLayer new];
-        _waveLayerBack2.bounds = CGRectMake(0, 0, frame.size.width, frame.size.height);
-        _waveLayerBack2.position = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
-        _waveLayerBack2.fillColor = [UIColor clearColor].CGColor;
-        _waveLayerBack2.lineWidth = _backLineWidth;
-        _waveLayerBack2.strokeColor = _backLineColor.CGColor;
-        [self.layer addSublayer:_waveLayerBack2];
-        
-        _waveLayer = [CAShapeLayer new];
-        _waveLayer.bounds = CGRectMake(0, 0, frame.size.width, frame.size.height);
-        _waveLayer.position = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
-        _waveLayer.fillColor = [UIColor clearColor].CGColor; // 这个很重要
-        _waveLayer.lineWidth = _foreLineWidth;
-        _waveLayer.strokeColor = _foreLineColor.CGColor;
-        [self.layer addSublayer:_waveLayer];
-        
-        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateWave)];
-        if (@available(iOS 10.0, *)) {
-            _displayLink.preferredFramesPerSecond = 40.0;
-        } else {
-            _displayLink.frameInterval = 4;
-        }
-        [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
-        [_displayLink setPaused:YES];
+        [self setupConstant];
+        [self setupUI];
     }
     return self;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self setupConstant];
+    [self setupUI];
+}
+
+- (void)setupConstant {
+    _paddingLeft = 20.0;
+    _numberOfWaves = 2.0;
+    _waveSpeed = 8.0;
+    _foreAmplitude = 18.0;
+    _backAmplitude = 5.0;
+    _foreLineColor = [UIColor greenColor];
+    _backLineColor = [[UIColor greenColor] colorWithAlphaComponent:0.5];
+    _foreLineWidth = 2.0;
+    _backLineWidth = 1.0;
+}
+
+- (void)setupUI {
+    _waveLayerBack1 = [CAShapeLayer new];
+    _waveLayerBack1.bounds = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    _waveLayerBack1.position = CGPointMake(self.frame.size.width/2.0, self.frame.size.height/2.0);
+    _waveLayerBack1.fillColor = [UIColor clearColor].CGColor;
+    _waveLayerBack1.lineWidth = _backLineWidth;
+    _waveLayerBack1.strokeColor = _backLineColor.CGColor;
+    [self.layer addSublayer:_waveLayerBack1];
+    
+    _waveLayerBack2 = [CAShapeLayer new];
+    _waveLayerBack2.bounds = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    _waveLayerBack2.position = CGPointMake(self.frame.size.width/2.0, self.frame.size.height/2.0);
+    _waveLayerBack2.fillColor = [UIColor clearColor].CGColor;
+    _waveLayerBack2.lineWidth = _backLineWidth;
+    _waveLayerBack2.strokeColor = _backLineColor.CGColor;
+    [self.layer addSublayer:_waveLayerBack2];
+    
+    _waveLayer = [CAShapeLayer new];
+    _waveLayer.bounds = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    _waveLayer.position = CGPointMake(self.frame.size.width/2.0, self.frame.size.height/2.0);
+    _waveLayer.fillColor = [UIColor clearColor].CGColor; // 这个很重要
+    _waveLayer.lineWidth = _foreLineWidth;
+    _waveLayer.strokeColor = _foreLineColor.CGColor;
+    [self.layer addSublayer:_waveLayer];
+    
+    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateWave)];
+    if (@available(iOS 10.0, *)) {
+        _displayLink.preferredFramesPerSecond = 40.0;
+    } else {
+        _displayLink.frameInterval = 4;
+    }
+    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+    [_displayLink setPaused:YES];
 }
 
 - (void)startWaving {

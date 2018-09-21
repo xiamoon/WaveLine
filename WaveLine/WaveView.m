@@ -2,7 +2,7 @@
 //  WaveView.m
 //  WaveLine
 //
-//  Created by 李乾 on 2018/4/16.
+//  Created by kaleo on 2018/4/16.
 //  Copyright © 2018年 liqian. All rights reserved.
 //
 
